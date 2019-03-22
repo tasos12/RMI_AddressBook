@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class AddressBookClient {
 
 	private static final String HOST = "localhost";
-	private static final int PORT = Registry.REGISTRY_PORT;
+	private static final int PORT = 2000;
 	private static final String OBJ_NAME = "AddressBook";
 
 	private static Scanner input;
@@ -71,16 +71,14 @@ public class AddressBookClient {
 	}
 
 	private static BookEntry getEntryfromInput(){
-		System.out.print("New Id = ");
-		int tempId = input.nextInt();
-		input.nextLine();
 		System.out.print("Fullname = ");
+		input.nextLine();
 		String tempFullname = input.nextLine();
 		System.out.print("Email = ");
 		String tempEmail = input.nextLine();
 		System.out.print("Phone = ");
 		int tempPhone = input.nextInt();
-		return new BookEntry(tempId, tempFullname, tempEmail, tempPhone);
+		return new BookEntry(tempFullname, tempEmail, tempPhone);
 	}
 
 }

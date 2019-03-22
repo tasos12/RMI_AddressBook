@@ -14,6 +14,12 @@ public class BookEntry implements Serializable{
 		this.setEmail(email);
 		this.setPhoneNumber(phoneNumber);
 	}
+	
+	public BookEntry(String fullname, String email, int phoneNumber) {
+		this.setFullname(fullname);
+		this.setEmail(email);
+		this.setPhoneNumber(phoneNumber);
+	}
 
 	public String getFullname() {
 		return fullname;

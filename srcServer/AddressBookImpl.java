@@ -1,101 +1,56 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.*;
+import java.util.Hashtable;
+import java.util.Set;
 
 public class AddressBookImpl extends UnicastRemoteObject implements AddressBook{
 
 	private static final long serialVersionUID = 8197529583444611357L;
 	
-	private Statement statement;
-	private ResultSet result;
+	private Hashtable<Integer, BookEntry> database;
+	private int id = 0;
 	
-	public AddressBookImpl(Statement s) throws RemoteException{
-		statement = s;
+	public AddressBookImpl() throws RemoteException{
+		database = new Hashtable<Integer, BookEntry>();
 	}
 	
-	public String insert(BookEntry entry) throws RemoteException{
-		String text = "Error while inserting";
-		String query = "insert into users values (" + entry.getId() + ", \"" + entry.getFullname()
-						 + "\", \"" + entry.getEmail() + "\", " + entry.getPhoneNumber() + ")";
-		System.out.println(query);
-		try{
-			int r = statement.executeUpdate(query);
-			text = updateResult2String(r);
-		} catch(Exception e){
-			System.out.println(e);
-		}
-		return text;
+	public synchronized String insert(BookEntry entry) throws RemoteException{
+		id++;
+		entry.setId(id);
+		database.put(id, entry);
+		return "User Inserted";
 	}
 
-	public String update(int id, BookEntry entry) throws RemoteException{
-		String text = "Error while updating";
-		String query = "update users set id = " + entry.getId() + ", fullname = \"" + entry.getFullname()
-						+ "\", email = \"" + entry.getEmail() + "\", phone = " + entry.getPhoneNumber()
-						+ " where id = " + id;
-		System.out.println(query);
-		try{
-			int r = statement.executeUpdate(query);
-			text = updateResult2String(r);
-		} catch(Exception e){
-			System.out.println(e);
+	public synchronized String update(int id, BookEntry entry) throws RemoteException{
+		if(!database.containsKey(id)) {
+			return "User was not found";
 		}
-		return text;
+		database.get(id);
+		return "User updated";
 	}
 
-	public String select(int id) throws RemoteException{
-		String text = "Error while selecting";
-		String query = "select * from users where id = " + id;
-		System.out.println(query);
-		try{
-			result = statement.executeQuery(query);
-			text = result2String(result);
-		} catch(Exception e){
-			System.out.println(e);
+	public synchronized String select(int id) throws RemoteException{
+		if(!database.containsKey(id)) {
+			return "Id not found";
 		}
-		return text;
+		
+		return database.get(id).toString();
 	}
 
-	public String delete(int id) throws RemoteException{
-		String text = "Error while deleting";
-		String query = "delete from users where id = " + id;
-		System.out.println(query);
-		try{
-			int r = statement.executeUpdate(query);
-			text = updateResult2String(r);
-		} catch(Exception e){
-			System.out.println(e);
+	public synchronized String delete(int id) throws RemoteException{
+		if(!database.containsKey(id)) {
+			return "Id not found";
 		}
-		return text;
+		database.remove(id);
+		return "User deleted";
 	}
 
-	public String selectAll() throws RemoteException{
+	public synchronized String selectAll() throws RemoteException{
 		String text = "";
-		String query = "select * from users";
-		System.out.println(query);
-		try{
-			result = statement.executeQuery(query);
-			text = result2String(result);
-		} catch(Exception e) {
-			System.out.println(e);
+		Set<Integer> keys = database.keySet();
+		for(int key: keys) {
+			text += database.get(key).toString();
 		}
-		return text;
-	}
-
-	private String result2String(ResultSet r) throws Exception{
-		String text = "";
-		while(r.next()){
-			int tempId = r.getInt("id");
-			String tempFn = r.getString("fullname");
-			String tempMail = r.getString("email");
-			int tempPhone = r.getInt("phone");
-			BookEntry temp = new BookEntry(tempId, tempFn, tempMail, tempPhone);
-			text += temp.toString();
-		}
-		return text;
-	}
-	
-	private String updateResult2String(int result) throws Exception{
-		String text = "Number of lines updated: " + result;
 		return text;
 	}
 
