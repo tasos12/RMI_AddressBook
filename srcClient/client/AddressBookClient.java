@@ -1,13 +1,19 @@
+package client;
+
+import common.AddressBook;
+import common.BookEntry;
+
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AddressBookClient {
 
 	private static final String HOST = "localhost";
 	private static final int PORT = Registry.REGISTRY_PORT;
-	private static final String OBJ_NAME = "AddressBook";
+	private static final String OBJ_NAME = "common.common.AddressBook";
 
 	private static Scanner input;
 	
@@ -16,7 +22,7 @@ public class AddressBookClient {
 		try
 		{
 			Registry registry = LocateRegistry.getRegistry(HOST, PORT);
-			AddressBook addressBook = (AddressBook) registry.lookup(OBJ_NAME);
+			AddressBook addressBook = (AddressBook)registry.lookup(OBJ_NAME);
 
 			String result;
 			input = new Scanner(System.in);
@@ -25,7 +31,7 @@ public class AddressBookClient {
 			while(choice != 6){
 				System.out.println("1.Insert\n2.Update\n3.Select\n4.Delete\n5.SelectAll\n6.Exit");
 				choice = input.nextInt();
-				result = executeOption(choice, addressBook);
+				result = executeOption(choice,  addressBook);
 				System.out.println(result);
 			}
 			input.close();
@@ -71,16 +77,56 @@ public class AddressBookClient {
 	}
 
 	private static BookEntry getEntryfromInput(){
-		System.out.print("New Id = ");
-		int tempId = input.nextInt();
+		String tempEmail, tempId, tempPhone;
+
+		//Get ID
+		do {
+			System.out.print("New ID = ");
+			tempId = input.next();
+		} while (!isInteger(tempId));
+
+		//Get name
 		input.nextLine();
 		System.out.print("Fullname = ");
 		String tempFullname = input.nextLine();
-		System.out.print("Email = ");
-		String tempEmail = input.nextLine();
-		System.out.print("Phone = ");
-		int tempPhone = input.nextInt();
-		return new BookEntry(tempId, tempFullname, tempEmail, tempPhone);
+
+		//Get email
+		do {
+			System.out.print("Email = ");
+			tempEmail = input.nextLine();
+		} while (!isEmailLegit(tempEmail));
+
+		//Get phone
+		do {
+				System.out.print("Phone = ");
+				tempPhone = input.nextLine();
+		} while(!isInteger(tempPhone));
+
+		int id = Integer.parseInt(tempId);
+		int phone = Integer.parseInt(tempPhone);
+		return new BookEntry(id, tempFullname, tempEmail, phone);
+	}
+
+	private static boolean isEmailLegit(String input) {
+		if(input.contains("@")) {
+			String[] splitInput1 = input.split("@");
+			if(splitInput1[1].contains(".")) {
+				return true;
+			}
+		}
+		System.out.println("Email  must be formated as \"xxxx@xxx.xxx\"");
+		return false;
+	}
+
+	public static boolean isInteger(String str) {
+		try {
+			int d = Integer.parseInt(str);
+		}
+		catch(NumberFormatException nfe) {
+			System.out.println("Please give a number as ID");
+			return false;
+		}
+		return true;
 	}
 
 }
