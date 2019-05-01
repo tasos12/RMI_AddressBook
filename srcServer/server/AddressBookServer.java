@@ -1,4 +1,6 @@
-import java.sql.*; 
+package server;
+
+import java.sql.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -8,10 +10,10 @@ public class AddressBookServer {
 	private static final int PORT_DB = 3306;
 	private static final String TABLE = "addressbook";
 	private static final String URL = "jdbc:mysql://" + HOST + ":" + PORT_DB + "/" + TABLE;
-	private static final String USERNAME = "USERNAME";
-	private static final String PASSWORD = "PASSWORD";
+	private static final String USERNAME = "tasos";
+	private static final String PASSWORD = "password";
 	private static final int PORT_RMI = Registry.REGISTRY_PORT;
-	private static final String OBJ_NAME = "AddressBook";
+	private static final String OBJ_NAME = "common.common.AddressBook";
 
 	
 	public static void main(String[] args) throws Exception
@@ -25,7 +27,7 @@ public class AddressBookServer {
 			registry.rebind(OBJ_NAME, robj);
 			System.out.println("Object " + OBJ_NAME + " Bound");
 		} catch (Exception e) {
-	        System.err.println("AddressBook exception:");
+			System.err.println("common.common.AddressBook exception:");
 	        e.printStackTrace();
 		}
 		

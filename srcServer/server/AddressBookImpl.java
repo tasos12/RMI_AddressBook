@@ -1,26 +1,30 @@
+package server;
+
+import common.AddressBook;
+import common.BookEntry;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
-
 /**
- * The Address Book implementation implements the AddressBook class and provides the server with 
+ * The Address Book implementation implements the common.common.AddressBook class and provides the server with
  * its basic functionalities
- * 
+ *
  * @author Gkagkas Anastasios
  * @since 2019-03
  */
-public class AddressBookImpl extends UnicastRemoteObject implements AddressBook{
+public class AddressBookImpl extends UnicastRemoteObject implements AddressBook {
 
 	private static final long serialVersionUID = 8197529583444611357L;
-	
+
 	private Statement statement;
 	private ResultSet result;
-	
+
 	public AddressBookImpl(Statement s) throws RemoteException{
 		statement = s;
 	}
-	
+
 
 	/**
 	 * Inserts the address book entry specified by the client to the database
@@ -31,7 +35,7 @@ public class AddressBookImpl extends UnicastRemoteObject implements AddressBook{
 	public String insert(BookEntry entry) throws RemoteException{
 		String text = "Error while inserting";
 		String query = "insert into users values (" + entry.getId() + ", \"" + entry.getFullname()
-						 + "\", \"" + entry.getEmail() + "\", " + entry.getPhoneNumber() + ")";
+				+ "\", \"" + entry.getEmail() + "\", " + entry.getPhoneNumber() + ")";
 		System.out.println(query);
 		try{
 			int r = statement.executeUpdate(query);
@@ -53,8 +57,8 @@ public class AddressBookImpl extends UnicastRemoteObject implements AddressBook{
 	public String update(int id, BookEntry entry) throws RemoteException{
 		String text = "Error while updating";
 		String query = "update users set id = " + entry.getId() + ", fullname = \"" + entry.getFullname()
-						+ "\", email = \"" + entry.getEmail() + "\", phone = " + entry.getPhoneNumber()
-						+ " where id = " + id;
+				+ "\", email = \"" + entry.getEmail() + "\", phone = " + entry.getPhoneNumber()
+				+ " where id = " + id;
 		System.out.println(query);
 		try{
 			int r = statement.executeUpdate(query);
@@ -135,7 +139,7 @@ public class AddressBookImpl extends UnicastRemoteObject implements AddressBook{
 		}
 		return text;
 	}
-	
+
 	/**
 	 * Transforms the integer result of the query to string
 	 * @param result	an integer as a result of query
