@@ -1,19 +1,14 @@
 package server;
 
+import common.AddressBookImpl;
+
 import java.sql.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class AddressBookServer {
+import static common.Constants.*;
 
-	private static final String HOST = "localhost";
-	private static final int PORT_DB = 3306;
-	private static final String TABLE = "addressbook";
-	private static final String URL = "jdbc:mysql://" + HOST + ":" + PORT_DB + "/" + TABLE;
-	private static final String USERNAME = "tasos";
-	private static final String PASSWORD = "password";
-	private static final int PORT_RMI = Registry.REGISTRY_PORT;
-	private static final String OBJ_NAME = "common.common.AddressBook";
+public class AddressBookServer {
 
 	
 	public static void main(String[] args) throws Exception

@@ -1,6 +1,6 @@
 package common;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class BookEntry implements Serializable{
 
@@ -9,6 +9,8 @@ public class BookEntry implements Serializable{
 	private String fullname;
 	private String email;
 	private int phoneNumber;
+
+	public BookEntry(){}
 
 	public BookEntry(int id, String fullname, String email, int phoneNumber) {
 		this.id = id;
@@ -53,6 +55,44 @@ public class BookEntry implements Serializable{
 	public String toString(){
 		String text = id + ". " + fullname + " " + email + " " + phoneNumber + "\n";
 		return text;
+	}
+
+	public byte[] toBytes() {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+
+		try {
+			out = new ObjectOutputStream(bos);
+			out.writeObject(this);
+			out.flush();
+			return bos.toByteArray();
+		} catch (IOException ex) {
+		} finally {
+			try {
+				bos.close();
+			} catch (IOException e) {}
+		}
+		return new byte[0];
+	}
+
+	public void fromBytes(byte[] data) {
+		ByteArrayInputStream bis = new ByteArrayInputStream(data);
+		ObjectInput in = null;
+		try {
+			in = new ObjectInputStream(bis);
+			BookEntry o = (BookEntry) in.readObject();
+			this.setEmail(o.getEmail());
+			this.setFullname(o.getFullname());
+			this.setId(o.getId());
+			this.setPhoneNumber(o.getPhoneNumber());
+		} catch (ClassNotFoundException | IOException e) {
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException ex) {}
+		}
 	}
 
 }

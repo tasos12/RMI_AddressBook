@@ -1,4 +1,4 @@
-package server;
+package common;
 
 import common.AddressBook;
 import common.BookEntry;
@@ -27,7 +27,7 @@ public class AddressBookImpl extends UnicastRemoteObject implements AddressBook 
 
 
 	/**
-	 * Inserts the address book entry specified by the client to the database
+	 * Inserts the address book entry specified by the common to the database
 	 * @param entry the BookEntry to be inserted.
 	 * @return  	the number of lines changed in database
 	 * @see			BookEntry
@@ -70,7 +70,7 @@ public class AddressBookImpl extends UnicastRemoteObject implements AddressBook 
 	}
 
 	/**
-	 * Selects the BookEntry to return to the client
+	 * Selects the BookEntry to return to the common
 	 * @param id	the id of BookEntry to be returned
 	 * @return		the selected Bookentry as string
 	 */
