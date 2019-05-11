@@ -80,7 +80,7 @@ public class AddressBookRabbitMQServer {
                     channel.basicPublish("", delivery.getProperties().getReplyTo(), replyProps, response.getBytes("UTF-8"));
                     channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
 
-                    // RabbitMq consumer worker thread notifies the RPC server owner thread
+                    // RabbitMq consumer worker thread notifies the RPC rmiServer owner thread
                     synchronized (monitor) {
                         monitor.notify();
                     }

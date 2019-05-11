@@ -1,4 +1,4 @@
-package server;
+package rmiServer;
 
 import common.AddressBookImpl;
 
@@ -8,7 +8,7 @@ import java.rmi.registry.Registry;
 
 import static common.Constants.*;
 
-public class AddressBookServer {
+public class AddressBookRMIServer {
 
 	
 	public static void main(String[] args) throws Exception

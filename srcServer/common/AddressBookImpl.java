@@ -8,7 +8,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
 /**
- * The Address Book implementation implements the common.common.AddressBook class and provides the server with
+ * The Address Book implementation implements the common.common.AddressBook class and provides the rmiServer with
  * its basic functionalities
  *
  * @author Gkagkas Anastasios
