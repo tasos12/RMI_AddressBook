@@ -1,8 +1,6 @@
 package common;
 
-import common.AddressBook;
-import common.BookEntry;
-
+import javax.jws.WebService;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -14,6 +12,7 @@ import java.sql.*;
  * @author Gkagkas Anastasios
  * @since 2019-03
  */
+@WebService(endpointInterface = "common.AddressBook")
 public class AddressBookImpl extends UnicastRemoteObject implements AddressBook {
 
 	private static final long serialVersionUID = 8197529583444611357L;
