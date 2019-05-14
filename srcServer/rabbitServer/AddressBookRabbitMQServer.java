@@ -7,7 +7,6 @@ import common.BookEntry;
 
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Map;
 
 import static common.Constants.*;
